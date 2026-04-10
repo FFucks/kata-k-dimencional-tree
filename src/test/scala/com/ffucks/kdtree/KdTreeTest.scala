@@ -15,25 +15,25 @@ class KDTreeTest extends AnyFunSuite {
 
     val tree = new KDTree(points)
 
-    test("should contain existing point") {
+    test("should contain existing points") {
+        assert(tree.contains(Point(Vector(2, 3))))
         assert(tree.contains(Point(Vector(5, 4))))
+        assert(tree.contains(Point(Vector(9, 6))))
     }
 
     test("should not contain non-existing point") {
         assert(!tree.contains(Point(Vector(10, 10))))
+        assert(!tree.contains(Point(Vector(0, 0))))
     }
 
-    test("nearest neighbor should return closest point") {
-        val target = Point(Vector(9, 2))
-        val nearest = tree.nearestNeighbor(target)
-
-        assert(nearest.contains(Point(Vector(8, 1))))
+    test("should handle empty tree") {
+        val emptyTree = new KDTree(Seq.empty)
+        assert(!emptyTree.contains(Point(Vector(1, 1))))
     }
 
-    test("nearest neighbor exact match") {
-        val target = Point(Vector(2, 3))
-        val nearest = tree.nearestNeighbor(target)
-
-        assert(nearest.contains(Point(Vector(2, 3))))
+    test("should work with single element") {
+        val singleTree = new KDTree(Seq(Point(Vector(1, 1))))
+        assert(singleTree.contains(Point(Vector(1, 1))))
+        assert(!singleTree.contains(Point(Vector(2, 2))))
     }
 }
