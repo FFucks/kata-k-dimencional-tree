@@ -98,12 +98,20 @@ class KDTree(points: Seq[Point]) {
                     val axis = depth % k
 
                     val next = {
-                        if (target.coordenates(axis) < n.point.coordenates(axis)) n.left
-                        else n.right
+                        if (target.coordenates(axis) < n.point.coordenates(axis)) {
+                            n.left
+                        } else {
+                            n.right
+                        }
                     }
 
                     val other = {
-                        if (next == n.left) n.right else n.left
+                        if (next == n.left) {
+                            n.right
+                        } else {
+                            n.left
+                        }
+
                     }
 
                     val bestUpdated = {
