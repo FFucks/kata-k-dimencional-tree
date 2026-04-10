@@ -85,11 +85,10 @@ class KDTree(points: Seq[Point]) {
 
     def nearestNeighbor(target: Point): Option[Point] = {
 
-        def nn(
-                  node: Option[KDNode],
-                  depth: Int,
-                  best: Option[Point]
-              ): Option[Point] = {
+        def nn(node: Option[KDNode],
+              depth: Int,
+              best: Option[Point])
+        : Option[Point] = {
 
             node match {
                 case None => best
