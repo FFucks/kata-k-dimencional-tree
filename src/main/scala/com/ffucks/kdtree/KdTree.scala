@@ -82,4 +82,57 @@ class KDTree(points: Seq[Point]) {
 
         search(root, 0)
     }
+
+    def nearestNeighbor(target: Point): Option[Point] = {
+
+        def search(node: Option[KDNode],
+                   best: Option[Point],
+                   bestDist: Double): (Option[Point], Double) = {
+
+            if (node.isEmpty) {
+                return (best, bestDist)
+            }
+
+            val n = node.get
+
+            val currentDist = target.distance(n.point)
+
+            var currentBest = best
+            var currentBestDist = bestDist
+
+            if (currentDist < currentBestDist) {
+                currentBest = Some(n.point)
+                currentBestDist = currentDist
+            }
+
+            val axis = n.axis
+            val goLeft = target.coordenates(axis) < n.point.coordenates(axis)
+
+            val firstBranch = if (goLeft) n.left else n.right
+
+            val secondBranch = if (goLeft) n.right else n.left
+
+            val (bestAfterFirst, distAfterFirst) =
+                search(firstBranch, currentBest, currentBestDist)
+
+            currentBest = bestAfterFirst
+            currentBestDist = distAfterFirst
+
+            val axisDistance = math.abs(target.coordenates(axis) - n.point.coordenates(axis))
+
+            if (axisDistance < currentBestDist) {
+                val (bestAfterSecond, distAfterSecond) =
+                    search(secondBranch, currentBest, currentBestDist)
+
+                currentBest = bestAfterSecond
+                currentBestDist = distAfterSecond
+            }
+
+            (currentBest, currentBestDist)
+        }
+
+        val (bestPoint, _) = search(root, None, Double.MaxValue)
+
+        bestPoint
+    }
 }

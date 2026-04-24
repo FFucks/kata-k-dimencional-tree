@@ -36,4 +36,8 @@ class KDTreeTest extends AnyFunSuite {
         assert(singleTree.contains(Point(Vector(1, 1))))
         assert(!singleTree.contains(Point(Vector(2, 2))))
     }
+
+    val target = Point(Vector(9, 2))
+    val nearest = tree.nearestNeighbor(target)
+    println(s"Nearest neighbor value: ${nearest}, for target: ${target}")
 }
